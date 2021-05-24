@@ -115,4 +115,18 @@ public class Tree<T extends Comparable<T>> {
 //        System.out.print(root.getKey() + " ");
         builder.append(root.getKey()).append(" ");
     }
+
+    public boolean search(T value) {
+        return search(value, root);
+    }
+
+    private boolean search(T value, Node<T> root) {
+        if (root == null) return false;
+        if (root.getKey().equals(value)) return true;
+        if (value.compareTo(root.getKey()) < 0) {
+            return search(value, root.getLeft());
+        } else {
+            return search(value, root.getRight());
+        }
+    }
 }

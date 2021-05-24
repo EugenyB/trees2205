@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -5,6 +9,18 @@ public class Main {
     }
 
     private void run() {
+        try (ServerSocket serverSocket = new ServerSocket(1234)) {
+            while (true) {
+                Socket socket = serverSocket.accept();
+                ClientThread clientThread = new ClientThread(socket);
+                new Thread(clientThread).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void test() {
         Tree<Integer> tree = new Tree<>(); // 70, 60, 85, 87, 35, 68, 72
         tree.insert(70);
         tree.insert(60);
