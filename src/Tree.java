@@ -107,7 +107,7 @@ public class Tree<T extends Comparable<T>> {
 //        System.out.print(" ".repeat(level*3));
 //        System.out.println(root.getKey());
         builder.append(" ".repeat(level*3));
-        builder.append(root.getKey()).append("\n");
+        builder.append(root.getKey()).append("|");
     }
 
 
