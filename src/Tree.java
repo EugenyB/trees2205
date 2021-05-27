@@ -54,9 +54,9 @@ public class Tree<T extends Comparable<T>> {
 
     private void draw(Node<T> root, int level) {
         if (root != null) {
+            draw(root.getRight(), level+1);
             visitWithLevel(root, level);
             draw(root.getLeft(), level+1);
-            draw(root.getRight(), level+1);
         }
     }
 

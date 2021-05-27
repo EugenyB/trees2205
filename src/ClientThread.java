@@ -71,7 +71,6 @@ public class ClientThread implements Runnable {
                     }
                 } else if (command.toLowerCase().startsWith("delete")) {
                     String[] s1 = command.split(" ");
-                    System.out.println("===== delete =====");
                     if (searchInTree(s1[1])) {
                         deleteFromTree(s1[1]);
                         out.println(s1[1] + " was deleted");
@@ -98,13 +97,16 @@ public class ClientThread implements Runnable {
             case INTEGER: {
                 Integer value = Integer.parseInt(s);
                 integerTree.delete(value);
+                break;
             }
             case DOUBLE: {
                 Double value = Double.parseDouble(s);
                 doubleTree.delete(value);
+                break;
             }
             case STRING:
                 stringTree.delete(s);
+                break;
         }
     }
 
