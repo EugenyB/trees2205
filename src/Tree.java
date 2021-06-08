@@ -129,4 +129,16 @@ public class Tree<T extends Comparable<T>> {
             return search(value, root.getRight());
         }
     }
+
+    public void delete(Object value) {
+        delete((T)value);
+    }
+
+    public boolean search(Object value) {
+        return search((T)value);
+    }
+
+    public boolean insert(Object value) {
+        return insert((T) value);
+    }
 }

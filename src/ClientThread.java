@@ -3,19 +3,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Locale;
 
 public class ClientThread implements Runnable {
     private final Socket socket;
     private BufferedReader in;
     private PrintWriter out;
 
-    private TreeType type;
+    private TreeType treeType;
 
-
-    private Tree<Integer> integerTree;
-    private Tree<Double> doubleTree;
-    private Tree<String> stringTree;
+    private Tree<?> tree;
 
     public ClientThread(Socket socket) {
         this.socket = socket;
@@ -33,21 +29,21 @@ public class ClientThread implements Runnable {
             out.println("Tree. Select type: 1 - Integer, 2 - Double, 3 (or other) - String");
             String s = in.readLine();
             int val = Integer.parseInt(s.trim());
+            tree = new Tree<>();
             if (val == 1) {
-                integerTree = new Tree<>();
-                type = TreeType.INTEGER;
+                treeType = TreeType.IntegerTree;
                 out.println("Integer Tree created!");
             } else if (val == 2){
-                doubleTree = new Tree<>();
-                type = TreeType.DOUBLE;
+                treeType = TreeType.DoubleTree;
                 out.println("Double Tree created!");
             } else {
-                stringTree = new Tree<>();
-                type = TreeType.STRING;
+                treeType = TreeType.StringTree;
                 out.println("String Tree created!");
             }
             while (true) {
-                String command = in.readLine().trim();
+                String line = in.readLine();
+                if (line == null) break;
+                String command = line.trim();
                 if (command.toLowerCase().startsWith("exit")) {
                     out.println("bye");
                     break;
@@ -93,66 +89,23 @@ public class ClientThread implements Runnable {
     }
 
     private void deleteFromTree(String s) {
-        switch (type) {
-            case INTEGER: {
-                Integer value = Integer.parseInt(s);
-                integerTree.delete(value);
-                break;
-            }
-            case DOUBLE: {
-                Double value = Double.parseDouble(s);
-                doubleTree.delete(value);
-                break;
-            }
-            case STRING:
-                stringTree.delete(s);
-                break;
-        }
+        tree.delete(treeType.getValue(s));
     }
 
     private boolean searchInTree(String s) {
-        switch (type) {
-            case INTEGER: {
-                Integer value = Integer.parseInt(s);
-                return integerTree.search(value);
-            }
-            case DOUBLE: {
-                Double value = Double.parseDouble(s);
-                return doubleTree.search(value);
-            }
-            case STRING:
-                return stringTree.search(s);
+        try {
+            return tree.search(treeType.getValue(s));
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
     private String drawTree() {
-        switch (type) {
-            case INTEGER:
-                return integerTree.draw();
-            case DOUBLE:
-                return doubleTree.draw();
-            case STRING:
-                return stringTree.draw();
-        }
-        return "Unknown type of tree";
+        return tree.draw();
     }
 
     private boolean addInTree(String s) {
-        switch (type) {
-            case INTEGER: {
-                Integer value = Integer.valueOf(s);
-                return integerTree.insert(value);
-            }
-            case DOUBLE: {
-                Double value = Double.valueOf(s);
-                return doubleTree.insert(value);
-            }
-            case STRING: {
-                return stringTree.insert(s);
-            }
-        }
-        return false;
+        return tree.insert(treeType.getValue(s));
     }
 
 
