@@ -4,15 +4,41 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * Class for handling Client requests
+ * As of implementing Runnable, it is Java Thread
+ */
 public class ClientThread implements Runnable {
+    /**
+     * Socket for client connection
+     */
     private final Socket socket;
+
+    /**
+     * Reader for read client queries
+     */
     private BufferedReader in;
+
+    /**
+     * Writer for write client responses
+     */
     private PrintWriter out;
 
+    /**
+     * Type of elements in Tree
+     */
     private TreeType treeType;
 
+    /**
+     * Tree implementation
+     */
     private Tree<?> tree;
 
+    /**
+     * Constructor for Client thread.
+     * Initialize Reader and Writer
+     * @param socket - socket for client connection
+     */
     public ClientThread(Socket socket) {
         this.socket = socket;
         try {
@@ -23,6 +49,19 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Overridden method Run for Runnable
+     * Make client connection dialog and translates queries to internal Tree
+     * Sends responses to Client from internal Tree
+     * Requests are:
+     * <ul>
+     *     <li>insert</li>
+     *     <li>draw</li>
+     *     <li>search</li>
+     *     <li>delete</li>
+     * </ul>
+     * on "exit"  - breaks connection
+     */
     @Override
     public void run() {
         try {
@@ -88,10 +127,19 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Handle query "delete" - sending request to internal tree
+     * @param s string representation of element to delete
+     */
     private void deleteFromTree(String s) {
         tree.delete(treeType.getValue(s));
     }
 
+    /**
+     * Handle query "search" - sending request to internal tree
+     * @param s string representation of element to search
+     * @return true if element found and false otherwise
+     */
     private boolean searchInTree(String s) {
         try {
             return tree.search(treeType.getValue(s));
@@ -100,13 +148,22 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Create String representation of Tree.
+     * This is Multiline String, so for transmission using "|" instead of "\n"
+     * @return string representation of Tree
+     */
     private String drawTree() {
         return tree.draw();
     }
 
+    /**
+     * Add element in Tree
+     * @param s string representation of element for Tree
+     * @return true if element was added, false if there is equals element in Tree
+     */
     private boolean addInTree(String s) {
         return tree.insert(treeType.getValue(s));
     }
-
 
 }

@@ -245,7 +245,8 @@ public class MainFrame extends JFrame {
                 out.println("3");
                 treeType = TreeType.StringTree;
             }
-            textArea.setText(in.readLine());
+            String response = in.readLine();
+            SwingUtilities.invokeLater(()->textArea.setText(response));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -2,12 +2,22 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * Main class for Server
+ */
 public class Main {
-
+    /**
+     * Entry point for server program
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
 	    new Main().run();
     }
 
+    /**
+     * Main method  of server.
+     * Wait for connection from clients and creates client Threads
+     */
     private void run() {
         try (ServerSocket serverSocket = new ServerSocket(1234)) {
             while (true) {
@@ -18,26 +28,5 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void test() {
-        Tree<Integer> tree = new Tree<>(); // 70, 60, 85, 87, 35, 68, 72
-        tree.insert(70);
-        tree.insert(60);
-        tree.insert(85);
-        tree.insert(87);
-        tree.insert(35);
-        tree.insert(68);
-        tree.insert(72);
-        tree.insert(86);
-        tree.insert(90);
-
-        System.out.println(tree.draw());
-        System.out.println(tree.traverse());
-
-        tree.delete(85);
-
-        System.out.println(tree.draw());
-        System.out.println(tree.traverse());
     }
 }
